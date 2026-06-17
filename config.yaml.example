@@ -1,0 +1,62 @@
+# =============================================================================
+# RAG0 Configuration — YAML Example
+# =============================================================================
+# Copy this file to config.yaml and adjust as needed.
+# All values can be overridden via environment variables (see .env.example).
+#
+# Config loading priority (lowest → highest):
+#   1. Default values in src/rag0/config.py
+#   2. .env file
+#   3. This YAML file (config.yaml)
+#   4. Environment variables (RAG0_ prefix)
+# =============================================================================
+
+llm:
+  model_name: deepseek-chat
+  # base_url: https://api.deepseek.com   # auto-detected by LiteLLM
+  timeout: 60
+  max_retries: 3
+  temperature: 0.0
+
+embedding:
+  model_name: BAAI/bge-large-zh-v1.5
+  device: auto           # auto | cpu | cuda | mps
+  dimensions: 1024
+  normalize: true
+  batch_size: 32
+
+vector_store:
+  host: 127.0.0.1
+  port: 19530
+  user: root
+  password: Milvus
+  secure: false
+  index_type: HNSW
+  metric_type: IP        # IP (inner product) | L2 | COSINE
+
+database:
+  url: sqlite:///data/rag0.db
+
+text_splitter:
+  name: ChineseRecursiveTextSplitter
+  chunk_size: 500
+  chunk_overlap: 50
+  smaller_chunk_size: 0  # 0 = disabled (small-to-big)
+  enable_summary: false
+  enable_table_summary: false
+
+reranker:
+  model_name: BAAI/bge-reranker-large
+  type: cross-encoder     # cross-encoder | llm
+  top_k: 5
+
+server:
+  host: 0.0.0.0
+  port: 7861
+  cors_origins: "*"
+
+telemetry:
+  enabled: false
+
+log_level: INFO
+log_format: console        # console | json

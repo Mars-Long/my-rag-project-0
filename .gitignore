@@ -216,3 +216,36 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# =============================================================================
+# RAG0 project-specific
+# =============================================================================
+# Runtime data
+data/
+local_knowledge_base/
+
+# User config (contains secrets)
+config.yaml
+
+# Environment files with secrets
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# Downloaded models
+models/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
