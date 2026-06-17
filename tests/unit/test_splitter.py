@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import pytest
 from langchain_core.documents import Document
 
 from rag0.indexing.splitters import ChineseRecursiveTextSplitter, ChineseTextSplitter

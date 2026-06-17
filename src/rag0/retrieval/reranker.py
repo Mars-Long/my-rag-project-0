@@ -86,7 +86,7 @@ class CrossEncoderReranker(RerankerInterface):
             return documents[:top_k]
 
         # Assign new scores and sort
-        for doc, score in zip(documents, scores):
+        for doc, score in zip(documents, scores, strict=False):
             doc.score = float(score)
 
         ranked = sorted(documents, key=lambda d: d.score, reverse=True)
@@ -133,10 +133,11 @@ class CrossEncoderReranker(RerankerInterface):
                 logits = self._model(**inputs).logits
 
             # Handle BCE models (sigmoid) vs regression models
-            if logits.shape[-1] == 1:
-                scores = torch.sigmoid(logits).squeeze(-1)
-            else:
-                scores = logits[:, -1]  # relevance class
+            scores = (
+                torch.sigmoid(logits).squeeze(-1)
+                if logits.shape[-1] == 1
+                else logits[:, -1]
+            )
 
             return scores.cpu().tolist()
         except Exception as exc:

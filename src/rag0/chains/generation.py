@@ -10,7 +10,7 @@ Key improvements over the old ``rag/chains/generate.py``:
 from __future__ import annotations
 
 import time
-from typing import Any, AsyncIterator
+from collections.abc import AsyncIterator
 
 from rag0.connectors.llm import LLMConnector
 from rag0.logging import get_logger

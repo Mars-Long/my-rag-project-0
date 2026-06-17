@@ -11,7 +11,6 @@ import pytest
 import yaml
 
 from rag0.config import RagConfig, get_config
-from rag0.exceptions import ConfigurationError
 
 
 class TestRagConfig:
@@ -85,9 +84,8 @@ class TestRagConfig:
             os.environ,
             {"RAG0_SERVER__PORT": "99999"},
             clear=True,
-        ):
-            with pytest.raises(PydanticValidationError):
-                RagConfig()
+        ), pytest.raises(PydanticValidationError):
+            RagConfig()
 
     def test_all_sub_configs_present(self) -> None:
         """All sub-config sections should be initialized."""

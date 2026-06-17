@@ -15,7 +15,7 @@ from __future__ import annotations
 import uuid
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 from sqlalchemy import (
     JSON,
@@ -69,7 +69,7 @@ class KnowledgeBase(Base):
     )
 
     # Relationships
-    files: Mapped[list["KnowledgeFile"]] = relationship(
+    files: Mapped[list[KnowledgeFile]] = relationship(
         back_populates="knowledge_base", cascade="all, delete-orphan"
     )
 
@@ -96,7 +96,7 @@ class KnowledgeFile(Base):
 
     # Relationships
     knowledge_base: Mapped[KnowledgeBase] = relationship(back_populates="files")
-    docs: Mapped[list["FileDocument"]] = relationship(
+    docs: Mapped[list[FileDocument]] = relationship(
         back_populates="file", cascade="all, delete-orphan"
     )
 

@@ -8,8 +8,9 @@ Key fix over the old ``server/trace.py``:
 
 from __future__ import annotations
 
+from collections.abc import Iterator
 from contextlib import contextmanager
-from typing import Any, Callable, Iterator
+from typing import Any
 
 from rag0.config import TelemetryConfig
 from rag0.logging import get_logger

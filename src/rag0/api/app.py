@@ -89,9 +89,9 @@ def create_app(container: Container | None = None) -> FastAPI:
         )
 
     # ---- Routes ----
+    from rag0.api.routes.chat import router as chat_router
     from rag0.api.routes.health import router as health_router
     from rag0.api.routes.knowledge import router as knowledge_router
-    from rag0.api.routes.chat import router as chat_router
 
     app.include_router(health_router, tags=["Health"])
     app.include_router(knowledge_router, prefix="/knowledge-bases", tags=["Knowledge Bases"])

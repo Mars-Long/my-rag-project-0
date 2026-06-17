@@ -13,17 +13,14 @@ Key improvements:
 from __future__ import annotations
 
 import asyncio
-import os
 import uuid
 from pathlib import Path
-from typing import Any
 
 from langchain_core.documents import Document
 
 from rag0.connectors.registry import loader_registry, splitter_registry
-from rag0.connectors.vector_store import VectorStoreInterface
 from rag0.container import Container
-from rag0.exceptions import DocumentLoadError, DocumentSplitError
+from rag0.exceptions import DocumentLoadError
 from rag0.indexing.multi_vector import (
     generate_table_summaries,
     generate_text_summaries,

@@ -10,9 +10,8 @@ Key improvements over the old loaders:
 
 from __future__ import annotations
 
-import re
 from pathlib import Path
-from typing import Any, List
+from typing import Any
 
 from langchain_core.documents import Document
 
@@ -99,7 +98,6 @@ class PDFLoader:
     @staticmethod
     def _extract_tables_text(page: Any) -> list[str]:
         """Extract table content as text from a PDF page."""
-        import fitz
 
         try:
             tabs = page.find_tables()
@@ -123,10 +121,9 @@ class PDFLoader:
     @staticmethod
     def _ocr_page_images(page: Any, doc: Any) -> list[str]:
         """Run OCR on embedded images in the page."""
-        import fitz
 
         page_rect = page.rect
-        page_area = page_rect.width * page_rect.height
+        page_rect.width * page_rect.height
         ocr = _get_ocr_engine()
         texts: list[str] = []
 
@@ -229,7 +226,6 @@ class DOCXLoader:
     # ------------------------------------------------------------------
     def _extract_paragraph(self, para_element: Any) -> str:
         """Extract text and embedded images from a paragraph element."""
-        from docx.opc.constants import RELATIONSHIP_TYPE as RT
 
         namespace = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
         texts: list[str] = []

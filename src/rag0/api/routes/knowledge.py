@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import shutil
 from pathlib import Path
-from typing import List
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
@@ -150,9 +149,9 @@ async def clear_knowledge_base(name: str) -> dict:
 @router.post("/{name}/documents")
 async def upload_documents(
     name: str,
-    files: List[UploadFile] = File(...),
-    splitter_name: str | None = Form(None),
-    enable_multi_vector: bool = Form(False),
+    files: list[UploadFile] = File(...),  # noqa: B008
+    splitter_name: str | None = Form(None),  # noqa: B008
+    enable_multi_vector: bool = Form(False),  # noqa: B008
 ) -> dict:
     """Upload and index files into a knowledge base."""
     _validate_name(name)

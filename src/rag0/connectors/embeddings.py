@@ -9,9 +9,6 @@ Key improvements over the old ``LocalEmbeddings``:
 
 from __future__ import annotations
 
-from functools import lru_cache
-from typing import Sequence
-
 from rag0.config import EmbeddingConfig
 from rag0.exceptions import ConfigurationError
 from rag0.logging import get_logger
@@ -72,7 +69,6 @@ class EmbeddingConnector:
     # ------------------------------------------------------------------
     # Internal
     # ------------------------------------------------------------------
-    @lru_cache(maxsize=1024)
     def _cached_embed(self, text: str) -> list[float]:
         """LRU-cached single-text embedding."""
         embedding = self._model.encode(

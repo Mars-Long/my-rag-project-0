@@ -76,7 +76,7 @@ async def generate_multi_queries(
 
     # Parse: one query per line, skip empty/commented lines
     lines = [line.strip() for line in response.split("\n") if line.strip()]
-    lines = [l for l in lines if not l.startswith("#") and not l.startswith("//")]
+    lines = [ln for ln in lines if not ln.startswith("#") and not ln.startswith("//")]
 
     # Remove numbering prefixes like "1." or "1、"
     import re

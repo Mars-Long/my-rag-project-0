@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import hashlib
 import threading
-from typing import Any, Callable
+from typing import Any
 
 from rag0.logging import get_logger
 

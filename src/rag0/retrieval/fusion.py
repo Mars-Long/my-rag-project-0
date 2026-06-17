@@ -9,10 +9,6 @@ This version adds:
 
 from __future__ import annotations
 
-import asyncio
-from collections import OrderedDict
-from typing import List
-
 from rag0.connectors.vector_store import BM25Retriever, VectorStoreInterface
 from rag0.logging import get_logger
 from rag0.types import ScoredDocument
@@ -43,7 +39,7 @@ def reciprocal_rank_fusion(
 
     scores: dict[str, tuple[float, ScoredDocument]] = {}
 
-    for weight, doc_list in zip(weights, doc_lists):
+    for weight, doc_list in zip(weights, doc_lists, strict=False):
         for rank, doc in enumerate(doc_list):
             key = doc.doc_id or doc.content[:80]  # fallback to content fingerprint
             rrf_score = weight / (k + rank + 1)

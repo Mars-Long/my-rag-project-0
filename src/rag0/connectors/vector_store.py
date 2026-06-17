@@ -137,7 +137,7 @@ class MilvusVectorStore(VectorStoreInterface):
         self._ensure_collection(collection)
 
         rows: list[dict[str, Any]] = []
-        for doc, vec in zip(docs, embeddings):
+        for doc, vec in zip(docs, embeddings, strict=False):
             rows.append({
                 self._ID_FIELD: doc.doc_id,
                 self._VECTOR_FIELD: vec,

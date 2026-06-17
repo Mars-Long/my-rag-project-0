@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import pytest
-
 from rag0.caching import CacheBackend, EmbeddingCache, LLMResponseCache
 
 

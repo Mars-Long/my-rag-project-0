@@ -6,7 +6,7 @@ Replaces the old module-level globals (``rag/connector/base.py``,
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from rag0.config import RagConfig, get_config
 from rag0.connectors.database import (
@@ -45,7 +45,7 @@ class Container:
     # The session_factory is what callers use.
 
     @classmethod
-    def create(cls, config: RagConfig | None = None) -> "Container":
+    def create(cls, config: RagConfig | None = None) -> Container:
         """Create a fully-wired container from configuration.
 
         Args:

@@ -144,7 +144,7 @@ class RagConfig(BaseSettings):
     log_format: Literal["json", "console"] = Field(default="console")
 
     @model_validator(mode="after")
-    def _apply_yaml_overrides(self) -> "RagConfig":
+    def _apply_yaml_overrides(self) -> RagConfig:
         """Merge YAML config file values (lower priority than env vars)."""
         config_path = os.environ.get("RAG0_CONFIG_PATH", "config.yaml")
         if not os.path.isfile(config_path):

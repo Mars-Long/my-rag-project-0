@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import pytest
-
 from rag0.retrieval.fusion import reciprocal_rank_fusion
 from rag0.types import ScoredDocument
 
@@ -63,7 +61,7 @@ class TestReciprocalRankFusion:
         result = reciprocal_rank_fusion([list1, list2, list3])
         ids = [d.doc_id for d in result]
         assert "a" in ids
-        assert "a" == ids[0]  # Appears in all 3 lists
+        assert ids[0] == "a"  # Appears in all 3 lists
 
     def test_deduplication_by_doc_id(self) -> None:
         """Documents with the same doc_id are deduplicated."""

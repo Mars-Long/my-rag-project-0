@@ -13,7 +13,7 @@ from __future__ import annotations
 from typing import Any
 
 from rag0.chains.indexing import ScoredDocument
-from rag0.connectors.vector_store import BM25Retriever, VectorStoreInterface
+from rag0.connectors.vector_store import BM25Retriever
 from rag0.container import Container
 from rag0.logging import get_logger
 from rag0.retrieval.fusion import hybrid_search, reciprocal_rank_fusion
@@ -128,10 +128,7 @@ class RetrievalChain:
             all_results.append(results)
 
         # ── 4. Post-retrieval: fuse multi-query results ──
-        if len(all_results) == 1:
-            docs = all_results[0]
-        else:
-            docs = reciprocal_rank_fusion(all_results)
+        docs = all_results[0] if len(all_results) == 1 else reciprocal_rank_fusion(all_results)
 
         # Deduplicate by doc_id
         seen: set[str] = set()

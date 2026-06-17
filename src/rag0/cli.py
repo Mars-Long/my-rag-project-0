@@ -34,7 +34,7 @@ def main(argv: list[str] | None = None) -> None:
         argparse.ArgumentParser(add_help=False)
     ])
     # subparser for config validate
-    config_sub = sub.add_parser("config-validate", help="Validate configuration")
+    sub.add_parser("config-validate", help="Validate configuration")
     # Workaround: let's just use simple command names
 
     args = parser.parse_args(argv)
@@ -82,7 +82,7 @@ def _cmd_config_validate() -> None:
 
     try:
         config = get_config()
-        print(f"Configuration loaded successfully.")
+        print("Configuration loaded successfully.")
         print(f"  LLM model:      {config.llm.model_name}")
         print(f"  Embedding:      {config.embedding.model_name}")
         print(f"  Vector store:   {config.vector_store.host}:{config.vector_store.port}")

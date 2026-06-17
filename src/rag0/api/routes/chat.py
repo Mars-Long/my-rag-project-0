@@ -10,7 +10,8 @@ Key fixes over the old ``chat.py``:
 from __future__ import annotations
 
 import json
-from typing import Any, AsyncIterator
+from collections.abc import AsyncIterator
+from typing import Any
 
 from fastapi import APIRouter, Body
 from sse_starlette.sse import EventSourceResponse
@@ -28,13 +29,13 @@ router = APIRouter()
 
 @router.post("")
 async def chat(
-    query: str = Body(...),
-    knowledge_base_name: str = Body(...),
-    history: list[dict[str, str]] | None = Body(None),
-    top_k: int = Body(5),
-    stream: bool = Body(True),
-    return_docs: bool = Body(False),
-    enable_multi_query: bool = Body(True),
+    query: str = Body(...),  # noqa: B008
+    knowledge_base_name: str = Body(...),  # noqa: B008
+    history: list[dict[str, str]] | None = Body(None),  # noqa: B008
+    top_k: int = Body(5),  # noqa: B008
+    stream: bool = Body(True),  # noqa: B008
+    return_docs: bool = Body(False),  # noqa: B008
+    enable_multi_query: bool = Body(True),  # noqa: B008
 ) -> Any:
     """Chat with a knowledge base.
 

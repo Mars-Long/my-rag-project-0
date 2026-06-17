@@ -9,9 +9,9 @@ Key improvements over the old ``OpenaiCompatibleLLM``:
 
 from __future__ import annotations
 
-import asyncio
 import time
-from typing import Any, AsyncIterator
+from collections.abc import AsyncIterator
+from typing import Any
 
 import litellm
 

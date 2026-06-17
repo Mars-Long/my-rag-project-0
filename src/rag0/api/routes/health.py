@@ -28,8 +28,8 @@ async def readiness():
     # Check vector store
     try:
         vs = container.vector_store
-        healthy = vs.collection_exists("__health_check__")
-        checks["vector_store"] = "ok" if healthy or True else "error"
+        vs.collection_exists("__health_check__")
+        checks["vector_store"] = "ok" if True else "error"
     except Exception as exc:
         checks["vector_store"] = f"error: {exc}"
 

@@ -209,7 +209,5 @@ def _contains_table(text: str) -> bool:
     """Heuristic: does *text* contain a table (markdown or pipe-separated)?"""
     # Markdown table: contains |---|---| or at least 2 pipe-separated lines
     lines = text.strip().split("\n")
-    pipe_lines = [l for l in lines if l.strip().startswith("|")]
-    if len(pipe_lines) >= 2 and any("---" in l for l in pipe_lines):
-        return True
-    return False
+    pipe_lines = [ln for ln in lines if ln.strip().startswith("|")]
+    return bool(len(pipe_lines) >= 2 and any("---" in ln for ln in pipe_lines))
