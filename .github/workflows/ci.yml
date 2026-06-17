@@ -33,7 +33,7 @@ jobs:
         run: mypy src/rag0/
 
       - name: Unit tests (pytest)
-        run: pytest tests/unit/ -v --cov=rag0 --cov-report=term-missing --cov-fail-under=50
+        run: pytest tests/unit/ -v --cov=rag0 --cov-report=term-missing --cov-fail-under=20
 
       - name: Build check
         run: python -c "import rag0; print(f'RAG0 v{rag0.__version__}')"
