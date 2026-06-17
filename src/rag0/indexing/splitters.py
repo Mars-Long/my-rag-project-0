@@ -63,7 +63,7 @@ class ChineseRecursiveTextSplitter(RecursiveCharacterTextSplitter):
             **kwargs,
         )
 
-    def split_documents(self, documents: list[Any]) -> list[Any]:
+    def split_documents(self, documents: list[Any]) -> list[Any]:  # type: ignore[override]
         """Split all documents — **fixed** from the old ``documents[:1]`` bug.
 
         Args:

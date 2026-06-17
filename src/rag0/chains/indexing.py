@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import asyncio
 import uuid
+from collections.abc import Sequence
 from pathlib import Path
 
 from langchain_core.documents import Document
@@ -48,7 +49,7 @@ class IndexingChain:
     # ------------------------------------------------------------------
     async def index_files(
         self,
-        file_paths: list[str | Path],
+        file_paths: Sequence[str | Path],
         knowledge_base_name: str,
         *,
         splitter_name: str | None = None,
@@ -108,13 +109,21 @@ class IndexingChain:
 
             # 3. Assign IDs
             for chunk in chunks:
-                chunk.id = str(uuid.uuid4())
+                chunk.metadata["doc_id"] = str(uuid.uuid4())
 
             # 4. Multi-vector (optional)
             multi_vector_docs = await self._multi_vector(chunks, enable_multi_vector)
 
-            # 5. Store
-            all_docs = chunks + multi_vector_docs
+            # 5. Store — convert LangChain Documents to ScoredDocuments
+            scored_chunks = [
+                ScoredDocument(
+                    content=c.page_content,
+                    metadata=c.metadata,
+                    doc_id=c.metadata.get("doc_id", str(uuid.uuid4())),
+                )
+                for c in chunks
+            ]
+            all_docs = scored_chunks + multi_vector_docs
             await self._store(file_path, kb_name, all_docs)
 
             logger.info(
@@ -158,7 +167,7 @@ class IndexingChain:
             )
 
         loader = loader_cls(str(file_path))
-        docs = loader.load()
+        docs: list[Document] = loader.load()
 
         if not docs:
             raise DocumentLoadError(
@@ -173,7 +182,7 @@ class IndexingChain:
         """Split documents using the registered splitter."""
         splitter_cls = splitter_registry.get_required(splitter_name)
         splitter = splitter_cls()
-        return splitter.split_documents(documents)
+        return list(splitter.split_documents(documents))  # type: ignore[no-any-return]
 
     async def _multi_vector(
         self,
@@ -207,32 +216,21 @@ class IndexingChain:
         self,
         file_path: Path,
         kb_name: str,
-        docs: list[Document],
+        docs: list[ScoredDocument],
     ) -> None:
         """Store documents into the vector store and metadata database."""
         vs = self._container.vector_store
         emb = self._container.embedding
 
-        # Convert to ScoredDoc list
-        scored_docs: list[ScoredDocument] = []
-        for doc in docs:
-            # LangChain Document or ScoredDocument
-            content = doc.page_content if hasattr(doc, "page_content") else doc.content
-            meta = dict(doc.metadata) if hasattr(doc, "metadata") else {}
-            doc_id = meta.get("doc_id", getattr(doc, "id", str(uuid.uuid4())))
-            scored_docs.append(
-                ScoredDocument(content=content, metadata=meta, doc_id=doc_id)
-            )
-
         # Batch embed
-        texts = [d.content for d in scored_docs]
+        texts = [d.content for d in docs]
         embeddings = emb.embed_documents(texts)
 
         # Delete old chunks for this file (by source metadata)
         vs.delete_by_filter(kb_name, f'metadata["source"] == "{str(file_path)}"')
 
         # Insert new
-        vs.add_documents(kb_name, scored_docs, embeddings)
+        vs.add_documents(kb_name, docs, embeddings)
 
         # Save metadata to database
         session = self._container.new_session()
@@ -256,7 +254,7 @@ class IndexingChain:
 
             # Doc records (chunk IDs)
             doc_infos = [
-                {"doc_id": d.doc_id, "metadata": d.metadata} for d in scored_docs
+                {"doc_id": d.doc_id, "metadata": d.metadata} for d in docs
             ]
             file_repo.add_docs(kb_name, file_path.name, doc_infos)
 

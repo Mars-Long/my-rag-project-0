@@ -34,10 +34,11 @@ def configure_logging(
         structlog.processors.format_exc_info,
     ]
 
-    if fmt == "json":
-        renderer = structlog.processors.JSONRenderer()
-    else:
-        renderer = structlog.dev.ConsoleRenderer(colors=True)
+    renderer: structlog.types.Processor = (
+        structlog.processors.JSONRenderer()
+        if fmt == "json"
+        else structlog.dev.ConsoleRenderer(colors=True)
+    )
 
     structlog.configure(
         processors=shared_processors
@@ -74,4 +75,4 @@ def configure_logging(
 
 def get_logger(name: str | None = None) -> structlog.stdlib.BoundLogger:
     """Return a structlog logger bound with the given name."""
-    return structlog.get_logger(name or __name__)
+    return structlog.get_logger(name or __name__)  # type: ignore[no-any-return]

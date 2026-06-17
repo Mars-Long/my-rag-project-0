@@ -199,7 +199,7 @@ class MilvusVectorStore(VectorStoreInterface):
             logger.info("Dropped collection", collection=name)
 
     def collection_exists(self, name: str) -> bool:
-        return utility.has_collection(name, using=self._alias)
+        return bool(utility.has_collection(name, using=self._alias))
 
     # ------------------------------------------------------------------
     # Helpers

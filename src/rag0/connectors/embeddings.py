@@ -77,7 +77,7 @@ class EmbeddingConnector:
             show_progress_bar=False,
             normalize_embeddings=self._config.normalize,
         )
-        return embedding[0].tolist()
+        return list(embedding[0].tolist())  # type: ignore[no-any-return]
 
     def _load_model(self):
         """Load the sentence-transformers model."""

@@ -96,7 +96,7 @@ async def route_query_to_file(
             context={"response": response[:200]},
         ) from exc
 
-    file_name = result.get("file_name")
+    file_name: str | None = result.get("file_name")
     if file_name and file_name in file_names:
         logger.debug("Query routed to file", question=question[:50], file=file_name)
         return file_name

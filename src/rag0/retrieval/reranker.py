@@ -11,6 +11,7 @@ Key improvements over the old ``reranker.py``:
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from typing import Any
 
 from rag0.config import RerankerConfig
 from rag0.logging import get_logger
@@ -59,8 +60,8 @@ class CrossEncoderReranker(RerankerInterface):
 
     def __init__(self, config: RerankerConfig) -> None:
         self._config = config
-        self._model = None
-        self._tokenizer = None
+        self._model: Any = None
+        self._tokenizer: Any = None
         self._device = self._resolve_device()
         self._load_model()
 
@@ -182,7 +183,7 @@ class LLMReranker(RerankerInterface):
         self._config = config
         self._llm = llm
 
-    async def rank(
+    async def rank(  # type: ignore[override]
         self,
         query: str,
         documents: list[ScoredDocument],
