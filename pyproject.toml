@@ -35,6 +35,9 @@ dependencies = [
     # Database
     "sqlalchemy>=2.0",
     "alembic>=1.13",
+    # Text Processing
+    "langchain-core>=0.3",
+    "langchain-text-splitters>=0.3",
     # Configuration
     "pydantic-settings>=2.0",
     "pyyaml>=6.0",
