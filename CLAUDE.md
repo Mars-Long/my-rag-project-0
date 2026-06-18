@@ -150,7 +150,7 @@ loader = loader_registry.get(".pdf")  # 按 key 获取
 
 ### CI 配置注意事项
 
-- CI 使用 Python 3.11/3.12，`pyproject.toml` 要求 `>=3.11`，但代码兼容 3.10+
+- CI 使用 Python 3.10/3.11/3.12，`pyproject.toml` 要求 `>=3.10`
 - Coverage 阈值设为 20%（单元测试覆盖 config/fusion/caching/splitter/generation，connectors/API 需集成测试）
 - 新增依赖时必须加入 `pyproject.toml` 的 `dependencies`，本地 conda 环境可能有遗留包
 - `# noqa: B008` 用于 FastAPI 的 `Body()/File()/Form()` 默认值（标准 FastAPI 模式）
