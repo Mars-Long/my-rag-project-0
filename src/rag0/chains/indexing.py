@@ -22,6 +22,10 @@ from langchain_core.documents import Document
 from rag0.connectors.registry import loader_registry, splitter_registry
 from rag0.container import Container
 from rag0.exceptions import DocumentLoadError
+from rag0.indexing import (
+    loaders,  # noqa: F401 — trigger @loader_registry.register()
+    splitters,  # noqa: F401 — trigger @splitter_registry.register()
+)
 from rag0.indexing.multi_vector import (
     generate_table_summaries,
     generate_text_summaries,

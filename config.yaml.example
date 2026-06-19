@@ -12,7 +12,7 @@
 # =============================================================================
 
 llm:
-  model_name: deepseek-chat
+  model_name: deepseek-v4-pro
   # base_url: https://api.deepseek.com   # auto-detected by LiteLLM
   timeout: 60
   max_retries: 3

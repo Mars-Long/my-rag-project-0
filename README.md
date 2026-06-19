@@ -17,8 +17,8 @@
 ### 1. 克隆并配置
 
 ```bash
-git clone <repo-url> rag0
-cd rag0
+git clone https://github.com/Mars-Long/my-rag-project-0.git
+cd my-rag-project-0
 cp .env.example .env        # 编辑 .env，填入你的 API Key
 cp config.yaml.example config.yaml
 ```

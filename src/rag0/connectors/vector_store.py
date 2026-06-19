@@ -21,7 +21,6 @@ from pymilvus import (
     FieldSchema,
     MilvusClient,
     connections,
-    utility,
 )
 
 from rag0.config import VectorStoreConfig
@@ -195,11 +194,11 @@ class MilvusVectorStore(VectorStoreInterface):
 
     def drop_collection(self, name: str) -> None:
         if self.collection_exists(name):
-            utility.drop_collection(name, using=self._alias)
+            self.client.drop_collection(name)
             logger.info("Dropped collection", collection=name)
 
     def collection_exists(self, name: str) -> bool:
-        return bool(utility.has_collection(name, using=self._alias))
+        return bool(self.client.has_collection(name))
 
     # ------------------------------------------------------------------
     # Helpers
