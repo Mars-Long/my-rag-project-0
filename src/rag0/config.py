@@ -10,11 +10,37 @@ from __future__ import annotations
 
 import os
 from functools import lru_cache
+from pathlib import Path
 from typing import Literal
 
 import yaml
 from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+def _load_dotenv() -> None:
+    """Load ``.env`` file into ``os.environ`` before pydantic-settings reads it.
+
+    pydantic-settings only loads ``.env`` entries matching ``env_prefix``
+    (``RAG0_``). Provider env vars like ``DEEPSEEK_API_KEY`` and
+    ``OPENAI_API_KEY`` don't start with ``RAG0_`` so they are discarded.
+    This function loads ALL entries, making them visible to LiteLLM.
+    """
+    env_path = Path(".env")
+    if not env_path.is_file():
+        return
+    with open(env_path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, _, value = line.partition("=")
+            key, value = key.strip(), value.strip().strip('"').strip("'")
+            if key not in os.environ:
+                os.environ[key] = value
+
+
+_load_dotenv()
 
 
 # =============================================================================

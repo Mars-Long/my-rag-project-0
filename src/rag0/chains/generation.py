@@ -85,8 +85,8 @@ class GenerateChain:
 
         try:
             answer = await self._llm.generate(messages)
-        except Exception:
-            logger.warning("LLM generation failed, returning fallback")
+        except Exception as exc:
+            logger.warning("LLM generation failed, returning fallback", error=str(exc))
             return "抱歉，生成回答时遇到了问题，请稍后重试。"
 
         elapsed = time.perf_counter() - start
@@ -117,8 +117,8 @@ class GenerateChain:
         try:
             async for token in self._llm.generate_stream(messages):
                 yield token
-        except Exception:
-            logger.warning("LLM stream failed mid-response")
+        except Exception as exc:
+            logger.warning("LLM stream failed mid-response", error=str(exc))
             yield "抱歉，生成回答时遇到了问题。"
 
     # ------------------------------------------------------------------

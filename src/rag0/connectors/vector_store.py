@@ -146,7 +146,9 @@ class MilvusVectorStore(VectorStoreInterface):
 
         logger.debug("Inserting documents", collection=collection, count=len(rows))
         result = self.client.insert(collection_name=collection, data=rows)
-        return result["primary_keys"] if isinstance(result, dict) else result.primary_keys  # type: ignore[no-any-return]
+        # MilvusClient.insert() returns {'insert_count': N, 'ids': [...]}
+        # ORM-style Collection.insert() returns MutationResult with .primary_keys
+        return result["ids"] if isinstance(result, dict) else result.primary_keys  # type: ignore[no-any-return]
 
     def search(
         self,
