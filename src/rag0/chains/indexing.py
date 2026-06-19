@@ -230,8 +230,18 @@ class IndexingChain:
         texts = [d.content for d in docs]
         embeddings = emb.embed_documents(texts)
 
-        # Delete old chunks for this file (by source metadata)
-        vs.delete_by_filter(kb_name, f'metadata["source"] == "{str(file_path)}"')
+        # Delete old chunks for this file (by source metadata).
+        # On Windows, paths contain backslashes (e.g. "data\uploads\...") which
+        # Milvus's expression parser treats as escape characters, causing:
+        #   MilvusException: cannot parse expression: ... token recognition error
+        # Normalize to POSIX separators for both the filter and the stored metadata.
+        normalized_source = str(file_path).replace("\\", "/")
+        vs.delete_by_filter(kb_name, f'metadata["source"] == "{normalized_source}"')
+
+        # Normalize source metadata in docs so stored paths match the filter
+        for doc in docs:
+            if "source" in doc.metadata:
+                doc.metadata["source"] = doc.metadata["source"].replace("\\", "/")
 
         # Insert new
         vs.add_documents(kb_name, docs, embeddings)

@@ -253,7 +253,10 @@ class MilvusVectorStore(VectorStoreInterface):
         parts = []
         for key, value in filters.items():
             if isinstance(value, str):
-                parts.append(f'{key} == "{value}"')
+                # Escape backslashes: Milvus expression parser treats them as
+                # escape chars, which breaks on Windows paths (e.g. "C:\data\...")
+                escaped = value.replace("\\", "\\\\")
+                parts.append(f'{key} == "{escaped}"')
             elif isinstance(value, bool):
                 parts.append(f"{key} == {str(value).lower()}")
             else:
